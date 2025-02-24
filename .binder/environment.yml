@@ -1,0 +1,5 @@
+name: mybinder-env
+channels:
+  - conda-forge
+dependencies:
+  - pip
