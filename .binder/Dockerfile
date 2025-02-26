@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Set non-interactive frontend to avoid prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip
    
 # Install scorep from PPA 
-RUN add-apt-repository -y ppa:andreasgocht/scorep \
+RUN add-apt-repository -y ppa:score-p/releases \
     && apt-get update \
     && apt-get install -y scorep
 
