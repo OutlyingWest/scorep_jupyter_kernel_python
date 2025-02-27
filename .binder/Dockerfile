@@ -16,21 +16,17 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     python3 \
     python3-pip
-   
-# Install scorep from PPA 
+
+# Install scorep from PPA
 RUN add-apt-repository -y ppa:score-p/releases \
     && apt-get update \
     && apt-get install -y scorep
 
 # Upgrade pip and install base Python dependencies
-RUN pip3 install pip setuptools wheel
+RUN pip3 install --upgrade pip setuptools wheel
 
 # Install Score-P Python bindings
 RUN pip3 install --no-cache-dir scorep
-
-# Install JUmPER kernel
-RUN pip3 install --no-cache-dir jumper-kernel && \
-    python3 -m jumper.install
 
 # Create jovyan user with UID 1000 (Binder requirement)
 RUN adduser --disabled-password \
@@ -50,11 +46,14 @@ USER ${NB_USER}
 # Ensure the PATH includes the correct Python location
 ENV PATH="${HOME}/.local/bin:${PATH}"
 
+# Install JupyterLab and notebook
+RUN pip install --no-cache-dir jupyterlab notebook
+
 # Install project dependencies from pyproject.toml using pip
 RUN pip install --no-cache-dir .
 
-# Install JupyterLab and notebook
-RUN pip install --no-cache-dir jupyterlab notebook
+# Install JUmPER
+RUN python3 -m jumper.install --user
 
 # Expose Jupyter Notebook port
 EXPOSE 8888
